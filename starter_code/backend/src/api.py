@@ -76,7 +76,7 @@ def create_app(test_config=None):
                 200,
             )
         except Exception:
-            abort(401)
+            abort(400)
 
     """
     @TODO implement endpoint
@@ -113,7 +113,7 @@ def create_app(test_config=None):
                 return json.dumps({"success": True, "drinks": [drink.long()]}), 200
 
         except Exception:
-            abort(401)
+            abort(400)
 
     """
     @TODO implement endpoint

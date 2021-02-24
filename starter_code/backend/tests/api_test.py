@@ -5,18 +5,17 @@ from flask_sqlalchemy import SQLAlchemy
 from ..src.api import create_app
 from ..src.database.models import db_drop_and_create_all, setup_db, Drink
 
-TOKEN_BARIST = ""
-TOKEN_MANAGER = ""
 
 
-
-class TriviaTestCase(unittest.TestCase):
+class CoffeTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = create_app()
+        self.testing = True
         self.client = self.app.test_client
+
         """ test database name """
         self.DB_HOST = os.getenv('DB_HOST', 'localhost:5432')  
         self.DB_USER = os.getenv('DB_USER', 'anagabrielesoares')  
@@ -25,48 +24,76 @@ class TriviaTestCase(unittest.TestCase):
         self.DB_PATH = 'postgresql+psycopg2://{}:{}@{}/{}'.format(self.DB_USER, self.DB_PASSWORD, self.DB_HOST, self.DB_NAME)
         setup_db(self.app, self.DB_PATH)
 
+        """ test tokens """
+        self.TOKEN_BARIST = os.getenv('TOKEN_BARIST')
+        self.TOKEN_MANAGER = os.getenv('TOKEN_MANAGER')
+        self.FAKE_TOKEN = 'JDSKJKS'
+
+
         with self.app.app_context():
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
             self.db.create_all()
 
     def tearDown(self):
-        """Executed after reach test"""
+        """Executed after each test"""
         pass
 
-    def test_get_categories(self):
-        res = self.client().get("/categories")
+    def test_get_drinks(self):
+        res = self.client().get("/drinks")
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
-        self.assertTrue(data["categories"])
-        self.assertTrue(data["total"])
-
-    def test_get_question_id(self):
-       res = self.client().get('/questions/1')
-       data = json.loads(res.data)
-
-       self.assertEqual(data['success'], True)
-       self.assertTrue(data['question'])
-
-    def test_get_questions(self):
-        res = self.client().get("/questions")
+        self.assertTrue(data["drinks"])
+    
+    def test_get_drinks_not_found(self):
+        res = self.client().get("/drinks")
         data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data["success"], True)
-        self.assertTrue(data["questions"])
-        self.assertTrue(data["total_questions"])
-        self.assertTrue(data["category"])
-
-    def test_get_questions_beyond(self):
-        res = self.client().get("/questions?page=200")
-        data = json.loads(res.data)
-
+        
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Not found")
+
+
+    def test_get_drinks_detail(self):
+       res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)})
+       data = json.loads(res.data)
+
+       self.assertEqual(res.status_code, 200)
+       self.assertEqual(data['success'], True)
+       self.assertTrue(data['drinks'])
+
+
+    def test_get_drinks_detail(self):
+       res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)})
+       data = json.loads(res.data)
+
+       self.assertEqual(res.status_code, 200)
+       self.assertEqual(data['success'], True)
+       self.assertTrue(data['drinks'])
+
+    
+    def test_get_drinks_detail_error(self):
+       res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer  {}'.format(self.FAKE_TOKEN)})
+       data = json.loads(res.data)
+
+       self.assertEqual(res.status_code, 401)
+       self.assertEqual(data["success"], False)
+       self.assertEqual(data["message"], {
+                         'code': 'unauthorized', 'description':
+                         'Permission not found.'})
+
+    def test_post_drink(self):
+      new_question = {
+            "question": "did we",
+            "answer": "test_answer",
+            "category": "1",
+            "difficulty": 1,
+        }
+      res = self.client().post("/questions", json=new_question)
+      data = json.loads(res.data)
+    
 
     # def test_delete_questions(self):
     #     res = self.client().delete('/questions/6')
