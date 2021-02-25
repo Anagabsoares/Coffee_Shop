@@ -85,61 +85,75 @@ class CoffeTestCase(unittest.TestCase):
                          'Permission not found.'})
 
     def test_post_drink(self):
-      new_question = {
-            "question": "did we",
-            "answer": "test_answer",
-            "category": "1",
-            "difficulty": 1,
+      new_drink= {
+            "title":" margarita",
+            "recipe": {
+                'color' : "black",
+                'name' : 'coffee',
+                'parts': '2'
+
+            } 
         }
-      res = self.client().post("/questions", json=new_question)
+      res = self.client().post("/drinks",  headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json=new_drink)
       data = json.loads(res.data)
+
+      self.assertEqual(res.status_code, 200)
+      self.assertEqual(data["success"], True)
     
+    def test_post_drink_error(self):
+      new_drink = {
+          "title":" margarita",
+          "recipe": {
+                'color' : "black",
+                'name' : 'coffee',
+                'parts': '2'} 
+      }   
+      res = self.client().post("/drinks",  headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)}, json=new_drink)
+      data = json.loads(res.data)
 
-    # def test_delete_questions(self):
-    #     res = self.client().delete('/questions/6')
-    #     data = json.loads(res.data)
+      self.assertEqual(res.status_code, 401)
+      self.assertEqual(data["success"], False)
+      self.assertEqual(data["message"], {
+                         'code': 'unauthorized', 'description':
+                         'Permission not found.'})
 
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['deleted'])
-    #     self.assertTrue(data['questions'])
-    #     self.assertTrue(data['total_questions'])
 
-    def test_delete_questions_error(self):
-        res = self.client().delete("/questions/7777")
-        data = json.loads(res.data)
-
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "unprocessable")
-
-    def test_post_question(self):
-        new_question = {
-            "question": "did we",
-            "answer": "test_answer",
-            "category": "1",
-            "difficulty": 1,
-        }
-        res = self.client().post("/questions", json=new_question)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data["success"], True)
-
-    def test_post_error(self):
+    def test_post_drink_error(self):
         something_inexistent = {}
-        res = self.client().post("/questions", json=something_inexistent)
+        res = self.client().post("/drinks",headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json=something_inexistent)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "unprocessable")
 
-    def test_question_search(self):
-        res = self.client().post("/questions/search", json={"searchTerm": "did"})
+    def test_delete_drink(self):
+        res = self.client().delete('/drinks/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
         data = json.loads(res.data)
-        print(res)
-        self.assertEqual(data["success"], True)
-        self.assertEqual(res.status_code, 200)
 
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['deleted'])
+        self.assertTrue(data['drinks'])
+       
+
+    def test_delete_questions_error_not_found(self):
+       res = self.client().delete('/drinks/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
+       data = json.loads(res.data)
+       self.assertEqual(data["success"], False)
+       self.assertEqual(data["message"], "unprocessable")
+
+    def test_delete_questions_error_unauthorized(self):
+       res = self.client().delete('/drinks/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)} )
+       data = json.loads(res.data)
+
+       self.assertEqual(res.status_code, 401)
+       self.assertEqual(data["success"], False)
+       self.assertEqual(data["message"], {
+                         'code': 'unauthorized', 'description':
+                         'Permission not found.'})
+     
+
+    
     def test_question_search_error(self):
         res = self.client().post("/questions/search", json={"searchTerm": "kskdmks"})
         data = json.loads(res.data)
