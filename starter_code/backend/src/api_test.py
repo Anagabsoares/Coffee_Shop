@@ -2,9 +2,8 @@ import os
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
-from ..src.api import create_app
-from ..src.database.models import db_drop_and_create_all, setup_db, Drink
-
+from .database.models import  setup_db
+from .api import create_app
 
 
 class CoffeTestCase(unittest.TestCase):
