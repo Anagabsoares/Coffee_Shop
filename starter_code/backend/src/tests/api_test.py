@@ -61,7 +61,7 @@ class CoffeTestCase(unittest.TestCase):
        data = json.loads(res.data)
 
        self.assertEqual(res.status_code, 200)
-       self.assertEqual(data['success'], True)
+       self.assertEqual(data['success'], True) 
        self.assertTrue(data['drinks'])
 
 
@@ -94,7 +94,7 @@ class CoffeTestCase(unittest.TestCase):
 
             } 
         }
-      res = self.client().post("/drinks",  headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json=new_drink)
+      res = self.client().post("/drinks-post",  headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json=new_drink)
       data = json.loads(res.data)
 
       self.assertEqual(res.status_code, 200)
@@ -108,7 +108,7 @@ class CoffeTestCase(unittest.TestCase):
                 'name' : 'coffee',
                 'parts': '2'} 
       }   
-      res = self.client().post("/drinks",  headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)}, json=new_drink)
+      res = self.client().post("/drinks-post",  headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)}, json=new_drink)
       data = json.loads(res.data)
 
       self.assertEqual(res.status_code, 401)
@@ -120,7 +120,7 @@ class CoffeTestCase(unittest.TestCase):
 
     def test_post_drink_error(self):
         something_inexistent = {}
-        res = self.client().post("/drinks",headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json=something_inexistent)
+        res = self.client().post("/drinks-post",headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json=something_inexistent)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -128,7 +128,7 @@ class CoffeTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     def test_delete_drink(self):
-        res = self.client().delete('/drinks/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
+        res = self.client().delete('/drinks-delete/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
         data = json.loads(res.data)
 
         self.assertEqual(data['success'], True)
@@ -137,13 +137,13 @@ class CoffeTestCase(unittest.TestCase):
        
 
     def test_delete_questions_error_not_found(self):
-       res = self.client().delete('/drinks/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
+       res = self.client().delete('/drinks-delete/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
        data = json.loads(res.data)
        self.assertEqual(data["success"], False)
        self.assertEqual(data["message"], "unprocessable")
 
     def test_delete_questions_error_unauthorized(self):
-       res = self.client().delete('/drinks/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)} )
+       res = self.client().delete('/drinks-delete/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)} )
        data = json.loads(res.data)
 
        self.assertEqual(res.status_code, 401)
@@ -152,57 +152,31 @@ class CoffeTestCase(unittest.TestCase):
                          'code': 'unauthorized', 'description':
                          'Permission not found.'})
      
-
-    
-    def test_question_search_error(self):
-        res = self.client().post("/questions/search", json={"searchTerm": "kskdmks"})
+    def test_patch_name_drink(self):
+        res = self.client().delete('/drinks-update/2', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json  = { 'title' : " newDrink"} )
         data = json.loads(res.data)
 
-        self.assertEqual(data["success"], False)
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data["message"], "Not found")
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['deleted'])
+        self.assertTrue(data['drinks'])
+       
 
-    def test_get_question_by_category(self):
-        res = self.client().get("/categories/1/questions")
-        data = json.loads(res.data)
+    def test_patch_drink_error_not_found(self):
+       res = self.client().delete('/drinks-update/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json = { 'title' : " newDrink"} )
+       data = json.loads(res.data)
+       self.assertEqual(data["success"], False)
+       self.assertEqual(data["message"], "unprocessable")
 
-        self.assertEqual(data["success"], True)
-        self.assertEqual(res.status_code, 200)
+    def test_patch_questions_error_unauthorized(self):
+       res = self.client().delete('/drinks-update/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)}, json  = { 'title' : " newDrink"} )
+       data = json.loads(res.data)
 
-    def test_get_questions_by_category_error(self):
-        res = self.client().get("/categories/2/questions")
-        data = json.loads(res.data)
-
-        self.assertEqual(data["success"], False)
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data["message"], "Not found")
-
-    def test_quizz_game(self):
-        res = self.client().post(
-            "/quizzes",
-            json={
-                "previous_questions": [2, 6],
-                "quiz_category": {"type": "", "id": ""},
-            },
-        )
-        data = json.loads(res.data)
-
-        self.assertEqual(data["success"], True)
-        self.assertEqual(res.status_code, 200)
-
-    def test_quizz_error(self):
-        res = self.client().post(
-            "/quizzes",
-            json={
-                "previous_questions": [999, 699],
-                "quiz_category": {"type": "Enterta", "id": "99"},
-            },
-        )
-        data = json.loads(res.data)
-
-        self.assertEqual(data["success"], False)
-        self.assertEqual(res.status_code, 400)
-        self.assertEqual(data["message"], "bad request")
+       self.assertEqual(res.status_code, 401)
+       self.assertEqual(data["success"], False)
+       self.assertEqual(data["message"], {
+                         'code': 'unauthorized', 'description':
+                         'Permission not found.'})
+     
 
 
 # # Make the tests conveniently executable

@@ -3,12 +3,12 @@ from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_filename = os.getenv("database_filename", "database.db") 
-project_dir = os.path.dirname(os.path.abspath(__file__))
-DATABASE_PATH= "sqlite:///{}".format(os.path.join(project_dir, database_filename))
-
+DB_HOST = os.getenv('DB_HOST', 'localhost:5432')  
+DB_USER = os.getenv('DB_USER', 'anagabrielesoares')  
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'postgres')  
+DB_NAME = os.getenv('DB_NAME', 'coffeeShop')  
+DATABASE_PATH = 'postgresql+psycopg2://{}:{}@{}/{}'.format(DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
 db = SQLAlchemy()
-
 '''
 setup_db(app)
     binds a flask application and a SQLAlchemy service

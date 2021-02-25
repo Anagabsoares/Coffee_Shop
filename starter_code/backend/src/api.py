@@ -39,7 +39,7 @@ def create_app(test_config=None):
             or appropriate status code indicating reason for failure
     """
 
-    @app.route("/drinks", methods=["POST"])
+    @app.route("/drinks-post", methods=["POST"])
     @requires_auth("post:drinks")
     def drink_post(jwt):
         body = dict(request.form or request.json or request.data)
@@ -90,7 +90,7 @@ def create_app(test_config=None):
             or appropriate status code indicating reason for failure
     """
 
-    @app.route("/drinks/<id>", methods=["PATCH"])
+    @app.route("/drinks-update/<id>", methods=["PATCH"])
     @requires_auth("patch:drinks")
     def update_drinks(jwt, id):
         try:
@@ -126,7 +126,7 @@ def create_app(test_config=None):
             or appropriate status code indicating reason for failure
     """
 
-    @app.route("/drinks/<int:drink_id>", methods=["DELETE"])
+    @app.route("/drinks-delete/<int:drink_id>", methods=["DELETE"])
     @requires_auth("delete:drinks")
     def delete_drink(jwt, drink_id):
         try:
