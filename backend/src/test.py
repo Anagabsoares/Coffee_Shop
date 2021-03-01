@@ -1,6 +1,5 @@
 import os
 import sys
-sys.path.append(os.getcwd())
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
@@ -21,12 +20,12 @@ class CoffeTestCase(unittest.TestCase):
 
         """ test database name """
     
-        self.DATABASE_PATH = 'postgresql+psycopg2://anagabrielesoares:postgres@localhost:5432/newly'
+        self.DATABASE_PATH = 'postgresql+psycopg2://anagabrielesoares:postgres@localhost:5432/coffee_test'
         setup_db(self.app, self.DATABASE_PATH)
 
         """ test tokens """
-        self.TOKEN_BARIST="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTUyMjU1OTcxNzkwOTU4MzcyMSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImlhdCI6MTYxNDM4NzIxNSwiZXhwIjoxNjE0NDczNjE1LCJhenAiOiI5ZndPVGV1czhrNVpzZ0Y1dGhQdTJpY1phM05SaGRhVCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWwiXX0.nfhYEeJOwY5RjCKBIQmXqG3yv6BIVkjMLktq3frJdYhyTrH5RSC-VKCH3FfJ1DTyUcCkyOmvaIcLedwBmpmrRmt2k3t08xeLvo6YxLcpRWufZ3qXKXnZ-GEaRql81oNCni-F55fjPufWqOZGkukRTeFrGu82jAXqOWK0fkCb5PTcgfGb1RN9UbHgLghGKuSDfZQWeUyN47XybG3K6qLFK9BWSLVKhIGpJ56o8ZlNXAVL4uTmWxWQ8lHSDuhVfQaxbd39YI_tkc8ZRVkSUIoXvI--v0kS85F-ZVAUwrtdJ8XmCcxTWLWAqTS2obvbP03S-lFvDQ7uIGJJLQump84uig"
-        self.TOKEN_MANAGER= "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDAwYzgxMjE1MjIxODAwNmEzYzc0MzUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTQzODc0NjMsImV4cCI6MTYxNDQ3Mzg2MywiYXpwIjoiOWZ3T1RldXM4azVac2dGNXRoUHUyaWNaYTNOUmhkYVQiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpkcmlua3MiLCJnZXQ6ZHJpbmtzLWRldGFpbCIsInBhdGNoOmRyaW5rcyIsInBvc3Q6ZHJpbmtzIl19.PcUkqGB-12ENcu8kCIDECzatZ0hu_qrpbcatkCqAJohwZkyyLsucqsaPrG4gznWYeImHv3gKnd2cfTF6qwM4zg6Q7X1BD2BDe6FvF5AGcqH_2kCTFoxlSBfI-F3h7o3_Eg9eKUaN96kU4-QUtR1tBlEP3dLWmeauN7eERWUjlMjLLpRxIaIwljaPsJ32QFfwHfLbBy1bP35DH_DMabc_c0ccf6xFe-bHmhLPnJbkBSQVi4Cwk6X71IbE5kBbyizgtevRWhOzF7u0uHSR1rB6qO9mk0JNruvMitN1R21ptbWBjZMsfwKCYWZCYp23DEjsqlPLA8V2Kw6Oy4qH45mQSA"
+        self.TOKEN_BARIST="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTUyMjU1OTcxNzkwOTU4MzcyMSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImlhdCI6MTYxNDU1ODY1NywiZXhwIjoxNjE0NjQ1MDU3LCJhenAiOiI5ZndPVGV1czhrNVpzZ0Y1dGhQdTJpY1phM05SaGRhVCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWwiXX0.DJDKtCWEH2AL85nUVg15V85osR90kMICBJZuM-rZHyH5zM8ixhaS1unWLBkyaKyJECV_sGWWVnHVXccXHuZS8BYwYgPcY7QW-H5oUpvaHp8w6qDxtk0pzaPNldhJyV_ROEQ1a7vlF2I0RBJsiSQDZeKL-ZRADuteADmQPDyElwf4ZV0Qk3FJX54WQDZTXya9aUInI4t2DGjCLOF7SrquUK0WWz5A7kIBtETSTwzt8-SD3zu6q0_VOE4RpMMl7FxA2wxe65zj3_J30iYJZrCbv9K-FrHJmi1-6EpXZxgKrO-WzE8R1Dc-YOdQwZOInbTMxeABEG4SzDPK9Sq8927dgg"
+        self.TOKEN_MANAGER= "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDAwYzgxMjE1MjIxODAwNmEzYzc0MzUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTQ1NTg3NTAsImV4cCI6MTYxNDY0NTE1MCwiYXpwIjoiOWZ3T1RldXM4azVac2dGNXRoUHUyaWNaYTNOUmhkYVQiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpkcmlua3MiLCJnZXQ6ZHJpbmtzLWRldGFpbCIsInBhdGNoOmRyaW5rcyIsInBvc3Q6ZHJpbmtzIl19.HoX7alTy5b3OQ65ah2F4Z5QqrnfWQUxMsLPZw2KuVyEZ4REFAxVbS3N-vzrZ5B0u0Lw3sHrtx8A-YngMQuSOHOBH6IjRBIMkThuZP9wwEXFjeXE2Qklv6XSk_OGXU337geupp-bESRqbdi_NptGiTXmARkVW4t3w9NT9KpRxqK4dIb808n4HeZAjvJrMzxKyyOU1ooNHmSVZGh_dxKo-c4Cnjgy7zSvHUtsx-V-5oHs16jzePx2YAy0I6KH-vuYFyqwECJUvmXYhra4AkkKrsT36vt89mnohJHKQnjtXK0X5x73zcclkwCrXEZwVpr4-p4yPOc_Dnam-SsAaMmQdKw"
         self.FAKE_TOKEN = 'JDSKJKS'
 
 
@@ -42,39 +41,45 @@ class CoffeTestCase(unittest.TestCase):
     def test_get_drinks(self):
         res = self.client().get("/drinks")
         data = json.loads(res.data)
+        print('GET DATA', data)
 
-        self.assertEqual(res.status_code, 200)
- 
-    
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["drinks"])
+        
 
+    def test_get_drinks_detail(self):
+       res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer {}'.format(self.TOKEN_BARIST)})
+       data = json.loads(res.data)
+       print('GET DETAILS', data)
 
-    # def test_get_drinks_detail(self):
-    #    res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer{}'.format(self.TOKEN_BARIST)})
-    #    data = json.loads(res.data)
-
-    #    self.assertEqual(res.status_code, 200)
-    #    self.assertEqual(data["success"], True) 
+       self.assertEqual(res.status_code, 200)
+       self.assertEqual(data['success'], True)
+       self.assertTrue(data["drinks"])
        
-
 
     def test_get_drinks_detail(self):
        res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer {}'.format(self.TOKEN_MANAGER)})
        data = json.loads(res.data)
-
+     
        self.assertEqual(res.status_code, 200)
        self.assertEqual(data["success"], True)
+       self.assertTrue(data["drinks"])
       
     
-    # def test_get_drinks_detail_error(self):
-    #    res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer{}'.format(self.FAKE_TOKEN)})
-    #    data = json.loads(res.data)
+    def test_get_drinks_detail_error(self):
+       res = self.client().get('/drinks-detail', headers = {'Authorization':'Bearer{}'.format(self.FAKE_TOKEN)})
+       data = json.loads(res.data)
+       print('data drink detail ERROR', data)
 
-    #    self.assertEqual(res.status_code, 401)
+       self.assertEqual(res.status_code, 401)
+       self.assertEqual(data["code"], "invalid_header")
+       self.assertTrue(data['description'], 'Authorization header must start with "Bearer"')
     
     
     def test_post_drink(self):
+        # title should be unique- make sure to change it before running the test file
       new_drink= {
-            "title":"newLYNEW",
+            "title":"A_new_drink_to_drink_8",
             "recipe": {
                 'color' : "white",
                 'name' : 'vodca',
@@ -83,88 +88,108 @@ class CoffeTestCase(unittest.TestCase):
  
       res = self.client().post("/drinks-post",  headers = {'Authorization':'Bearer {}'.format(self.TOKEN_MANAGER)}, json=new_drink)
       data = json.loads(res.data)
-
+      print("POST DATA", data)
+     
       self.assertEqual(res.status_code, 200)
-      self.assertTrue(data["newly_created_drink"])
-   
+      self.assertEqual(data['success'], True)
+      self.assertTrue(data['newly_created_drink'])
+
     
 
     
-    # def test_post_drink_error(self):
-    #   new_drink = {
-    #       "title":" margaritas",
+    def test_post_drink_error(self):
+        #  # title should be unique- make sure to change it before running the test file
+      new_drink = {
+          "title":"A_new_drink_to_drink_58",
+          "recipe": {
+                'color' : 'black',
+                'name' : 'coffee',
+                'parts': '2'} 
+      }   
+      res = self.client().post("/drinks-post",  headers = {'Authorization':'Bearer {}'.format(self.TOKEN_BARIST)}, json=new_drink)
+      data = json.loads(res.data)
+      print('POST DRINK ERROR', data)
+
+      self.assertEqual(res.status_code, 401)
+      self.assertEqual(data["code"], 'unauthorized')
+      
+
+    
+    def test_delete_drink(self):
+        # make sure to enter a correct id
+        res = self.client().delete('/drinks-delete/10', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
+        data = json.loads(res.data)
+        print('DELETE DATA', data)
+
+        self.assertEquals(data['success'], True)
+        self.assertTrue(data['deleted'] )
+        
+       
+
+    def test_delete_questions_error_not_found(self):
+       res = self.client().delete('/drinks-delete/444', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
+       data = json.loads(res.data)
+       print("DELETE DATA", data)
+
+       self.assertEquals(data["message"], "bad request")
+
+    # def test_delete_questions_error_unauthorized(self):
+    #    res = self.client().delete('/drinks-delete/4', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)} )
+    #    data = json.loads(res.data)
+    #    print('anaut delete', data)
+
+    #    self.assertEqual(res.status_code, 401)
+    #    self.assertEqual(data["code"], 'unauthorized')
+    #    self.assertEqual(data["message"], 'Permission not found')
+     
+    # def test_patch_name_drink(self):
+    #     updated_drink =  {
+    #       "title":"updatingYou",
     #       "recipe": {
     #             'color' : 'black',
     #             'name' : 'coffee',
     #             'parts': '2'} 
-    #   }   
-    #   res = self.client().post("/drinks-post",  headers = {'Authorization':'Bearer {}'.format(self.TOKEN_BARIST)}, json=new_drink)
-    #   data = json.loads(res.data)
-
-    #   self.assertEqual(res.status_code, 401)
-    #   self.assertEqual(data["success"], False)
-    #   self.assertEqual(data["message"], "unauthorized")
-    
-
-    # def test_post_drink_error(self):
-        
-    #     res = self.client().post("/drinks-post",headers = {'Authorization':'Bearer{}'.format(self.TOKEN_MANAGER)}, json={})
+    #     }   
+         
+    #     res = self.client().patch('/drinks-update/5', headers = {'Authorization':'Bearer {}'.format(self.TOKEN_MANAGER)}, json  = updated_drink )
     #     data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 401)
-    #     self.assertEqual(data["success"], False)
-    #     self.assertEqual(data["message"], "unprocessable")
-
-    
-    # def test_delete_drink(self):
-    #     res = self.client().delete('/drinks-delete/3', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
-    #     data = json.loads(res.data)
-
+    #     self.assertEqual(res.status_code, 200)
     #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['deleted'])
-    #     self.assertTrue(data['drinks'])
-       
-
-    # def test_delete_questions_error_not_found(self):
-    #    res = self.client().delete('/drinks-delete/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)} )
-    #    data = json.loads(res.data)
-    #    self.assertEqual(data["success"], False)
-    #    self.assertEqual(data["message"], "unprocessable")
-
-    # def test_delete_questions_error_unauthorized(self):
-    #    res = self.client().delete('/drinks-delete/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)} )
-    #    data = json.loads(res.data)
-
-    #    self.assertEqual(res.status_code, 401)
-    #    self.assertEqual(data["success"], False)
-    #    self.assertEqual(data["message"], {
-    #                      'code': 'unauthorized', 'description':
-    #                      'Permission not found.'})
-     
-    # def test_patch_name_drink(self):
-    #     res = self.client().delete('/drinks-update/2', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json  = { 'title' : " newDrink"} )
-    #     data = json.loads(res.data)
-
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['deleted'])
     #     self.assertTrue(data['drinks'])
        
 
     # def test_patch_drink_error_not_found(self):
-    #    res = self.client().delete('/drinks-update/198282', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json = { 'title' : " newDrink"} )
+    #    updated_drink =  {
+    #       "title":" margaritfras",
+    #       "recipe": {
+    #             'color' : 'black',
+    #             'name' : 'coffee',
+    #             'parts': '2'} }
+    #    res = self.client().patch('/drinks-update/908', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_MANAGER)}, json = updated_drink )
     #    data = json.loads(res.data)
-    #    self.assertEqual(data["success"], False)
-    #    self.assertEqual(data["message"], "unprocessable")
+    #    print('error update', data)
+    
+    
+    #    self.assertTrue(data['success'], False)
+    #    self.assertTrue(data['message'], 'unprocessable')
 
     # def test_patch_questions_error_unauthorized(self):
-    #    res = self.client().delete('/drinks-update/1', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)}, json  = { 'title' : " newDrink"} )
-    #    data = json.loads(res.data)
 
+
+    #    updated_drink =  {
+    #       "title":"A_new_drink_to_drink_18",
+    #       "recipe": {
+    #             'color' : 'black',
+    #             'name' : 'coffee',
+    #             'parts': '2'} 
+    #    }
+    #    res = self.client().patch('/drinks-update/7', headers = {'Authorization':'Bearer  {}'.format(self.TOKEN_BARIST)}, json = updated_drink)
+    #    data = json.loads(res.data)
+      
     #    self.assertEqual(res.status_code, 401)
-    #    self.assertEqual(data["success"], False)
-    #    self.assertEqual(data["message"], {
-    #                      'code': 'unauthorized', 'description':
-    #                      'Permission not found.'})
+    #    self.assertTrue(data['message'], "Permission not found")
+       
      
 
 

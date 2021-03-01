@@ -27,13 +27,13 @@ def create_app(test_config=None):
     @app.route("/drinks", methods=["GET"])
     # no permissions required
     def get_all_drinks():
+        drinks = Drink.query.all()
         try:
-            drinks = Drink.query.all()
             return (
                 json.dumps(
                     {"success": True, "drinks": [drink.short() for drink in drinks]}
                 ),
-                200,
+                200
             )
         except:
             abort(400)
@@ -58,8 +58,8 @@ def create_app(test_config=None):
             drink = Drink(title=new_drink_title, recipe=json.dumps([new_recipe_drink]))
             drink.insert()
             return(
-                 json.dumps({"success": True, "newly_created_drink": drink.long()},200)
-            )
+                 json.dumps({"success": True, "newly_created_drink": drink.long()}), 200)
+            
 
         except Exception:
             abort(422)
@@ -99,14 +99,14 @@ def create_app(test_config=None):
             or appropriate status code indicating reason for failure
     """
 
-    @app.route("/drinks-update/<id>", methods=["PATCH"])
+    @app.route("/drinks-update/<int:id>", methods=["PATCH"])
     @requires_auth("patch:drinks")
     def update_drinks(jwt, id):
         try:
             drink = Drink.query.filter(Drink.id == id).one_or_none()
             body = dict(request.form or request.json or request.data)
             if drink is None:
-                return json.dumps({"None drink found"}), 200
+                return json.dumps({"None drink found"}), 404
             else:
                 if body.get("title"):
                     drink.title = body.get("title")
@@ -114,15 +114,15 @@ def create_app(test_config=None):
                     drink.title
                 if body.get("recipe"):
                     updated_recipe = body.get("recipe")
-                    drink.recipe = json.dumps(updated_recipe)
+                    drink.recipe = json.dumps({updated_recipe})
                 else:
                     drink.recipe
 
                 drink.update()
-                return json.dumps({"success": True, "drinks": [drink.long()]}), 200
+                return (json.dumps({"success": True, "drinks": drink.long()}), 200)
 
         except Exception:
-            abort(400)
+            abort(422)
 
     """
     @TODO implement endpoint
@@ -135,27 +135,24 @@ def create_app(test_config=None):
             or appropriate status code indicating reason for failure
     """
 
-    @app.route("/drinks-delete/<drink_id>", methods=["DELETE"])
+    @app.route("/drinks-delete/<int:drink_id>", methods=["DELETE"])
     @requires_auth("delete:drinks")
     def delete_drink(jwt, drink_id):
         try:
             drink = Drink.query.filter(Drink.id == drink_id).one_or_none()
             if drink is None:
-                abort(404)
+                return json.dumps({"None drink found"}), 404
             else:
                 drink.delete()
 
-            return (
-                json.dumps(
+            return( json.dumps(
                     {
                         "success": True,
                         "deleted": drink.id,
-                    }
-                ),
-                200,
-            )
+                    }),200)
+            
         except Exception:
-            abort(422)
+            abort(400)
 
     ## Error Handling
 
