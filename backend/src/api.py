@@ -24,6 +24,12 @@ def create_app(test_config=None):
         )
       return response
 
+    @app.route('/login-results')  
+    def login_results():
+   
+        return "Welcome to Coffee Shop!"
+
+
     @app.route("/drinks", methods=["GET"])
     # no permissions required
     def get_all_drinks():
@@ -102,27 +108,26 @@ def create_app(test_config=None):
     @app.route("/drinks-update/<int:id>", methods=["PATCH"])
     @requires_auth("patch:drinks")
     def update_drinks(jwt, id):
-        try:
-            drink = Drink.query.filter(Drink.id == id).one_or_none()
-            body = dict(request.form or request.json or request.data)
+            id = id
+            drink = Drink.query.filter(Drink.id==id).one_or_none()
+
             if drink is None:
-                return json.dumps({"None drink found"}), 404
-            else:
-                if body.get("title"):
-                    drink.title = body.get("title")
-                else:
-                    drink.title
-                if body.get("recipe"):
-                    updated_recipe = body.get("recipe")
-                    drink.recipe = json.dumps({updated_recipe})
-                else:
-                    drink.recipe
+                abort(404)
+            try:
+                body = dict(request.form or request.json or request.data)
+                updated_recipe = body.get("recipe", None)
+                updated_title = body.get("title", None)
+
+                if updated_recipe:
+                    drink.recipe = json.dumps(updated_recipe)
+                if updated_title:
+                    drink.title = updated_title
 
                 drink.update()
                 return (json.dumps({"success": True, "drinks": drink.long()}), 200)
 
-        except Exception:
-            abort(422)
+            except Exception:
+                abort(422)
 
     """
     @TODO implement endpoint
@@ -138,47 +143,59 @@ def create_app(test_config=None):
     @app.route("/drinks-delete/<int:drink_id>", methods=["DELETE"])
     @requires_auth("delete:drinks")
     def delete_drink(jwt, drink_id):
-        try:
-            drink = Drink.query.filter(Drink.id == drink_id).one_or_none()
-            if drink is None:
-                return json.dumps({"None drink found"}), 404
-            else:
+       
+        drink = Drink.query.filter(Drink.id ==drink_id).one_or_none()
+
+        if drink is None:
+            abort(404)
+
+        else:     
+            try:
                 drink.delete()
 
-            return( json.dumps(
-                    {
-                        "success": True,
-                        "deleted": drink.id,
-                    }),200)
+                return( json.dumps(
+                        {
+                            "success": True,
+                            "deleted": drink.id,
+                        }),200)
             
-        except Exception:
-            abort(400)
+            except Exception:
+                abort(400)
 
     ## Error Handling
 
     @app.errorhandler(404)
     def not_found(error):
-        return jsonify({"success": False, "error": 404, "message": "Not found"}, 404)
+        return (
+                json.dumps({"success": False, "error": 404, "message": "Not found"}),
+                 404)
 
     @app.errorhandler(422)
     def unprocessable(error):
-        return jsonify({"success": False, "error": 422, "message": "unprocessable"},
+        return(
+            json.dumps({"success": False, "error": 422, "message": "unprocessable"}),
             422)
         
 
     @app.errorhandler(400)
     def bad_request(error):
-        return jsonify({"success": False, "error": 400, "message": "bad request"}, 400)
+        return( 
+            json.dumps({"success": False, "error": 400, "message": "bad request"}),
+         400)
 
     @app.errorhandler(500)
     def internal_service_error(error):
-        return jsonify(
-                {"success": False, "error": 500, "message": "internal server error"},500)
+        return(
+            json.dumps(
+                {"success": False, "error": 500, "message": "internal server error"}),
+            500)
        
     @app.errorhandler(401)
     def unauthorized_error(error):
-        return jsonify(
-                {"success": False, "error": 401, "message": "unauthorized"},401)   
+        return (
+            json.dumps(
+                {"success": False, "error": 401, "message": "unauthorized"}),
+            401)   
 
     """
     @TODO implement error handler for AuthError
