@@ -1,1 +1,1 @@
-web: ionic serve --port 8100 --nobroweser --nobroweser --nolivereload --noopen
+web: npm start
