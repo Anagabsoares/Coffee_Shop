@@ -18,10 +18,10 @@ def create_app(test_config=None):
     def after_request(response):
 
       response.headers.add(
-            "Access-Control-Allow-Headers", "Content-Type,Authorization, true")
+            "Access-Control-Allow-Headers", "Content-Type,Authorization,true")
       response.headers.add(
-            "Acess-Control-Allow-Methods", "GET, POST, DELETE,PATCH, OPTIONS"
-        )
+            "Acess-Control-Allow-Methods", "GET, POST,PUT, DELETE,PATCH, OPTIONS")
+      response.headers.add('Access-Control-Allow-Origin', '*')
       return response
 
     @app.route('/login-results')  
@@ -190,6 +190,13 @@ def create_app(test_config=None):
                 {"success": False, "error": 500, "message": "internal server error"}),
             500)
        
+    @app.errorhandler(401)
+    def not_allowes(error):
+        return (
+            json.dumps(
+                {"success": False, "error": 405, "message": "not"}),
+            401)   
+
     @app.errorhandler(401)
     def unauthorized_error(error):
         return (

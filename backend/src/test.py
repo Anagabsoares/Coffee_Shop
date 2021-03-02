@@ -20,12 +20,12 @@ class CoffeTestCase(unittest.TestCase):
 
         """ test database name """
     
-        self.DATABASE_PATH = 'postgresql+psycopg2://anagabrielesoares:postgres@localhost:5432/coffee_test'
+        self.DATABASE_PATH = 'postgresql+psycopg2://anagabrielesoares:postgres@localhost:5432/coffeeShop'
         setup_db(self.app, self.DATABASE_PATH)
 
         """ test tokens """
-        self.TOKEN_BARIST="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTUyMjU1OTcxNzkwOTU4MzcyMSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImlhdCI6MTYxNDU1ODY1NywiZXhwIjoxNjE0NjQ1MDU3LCJhenAiOiI5ZndPVGV1czhrNVpzZ0Y1dGhQdTJpY1phM05SaGRhVCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWwiXX0.DJDKtCWEH2AL85nUVg15V85osR90kMICBJZuM-rZHyH5zM8ixhaS1unWLBkyaKyJECV_sGWWVnHVXccXHuZS8BYwYgPcY7QW-H5oUpvaHp8w6qDxtk0pzaPNldhJyV_ROEQ1a7vlF2I0RBJsiSQDZeKL-ZRADuteADmQPDyElwf4ZV0Qk3FJX54WQDZTXya9aUInI4t2DGjCLOF7SrquUK0WWz5A7kIBtETSTwzt8-SD3zu6q0_VOE4RpMMl7FxA2wxe65zj3_J30iYJZrCbv9K-FrHJmi1-6EpXZxgKrO-WzE8R1Dc-YOdQwZOInbTMxeABEG4SzDPK9Sq8927dgg"
-        self.TOKEN_MANAGER= "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDAwYzgxMjE1MjIxODAwNmEzYzc0MzUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTQ1NTg3NTAsImV4cCI6MTYxNDY0NTE1MCwiYXpwIjoiOWZ3T1RldXM4azVac2dGNXRoUHUyaWNaYTNOUmhkYVQiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpkcmlua3MiLCJnZXQ6ZHJpbmtzLWRldGFpbCIsInBhdGNoOmRyaW5rcyIsInBvc3Q6ZHJpbmtzIl19.HoX7alTy5b3OQ65ah2F4Z5QqrnfWQUxMsLPZw2KuVyEZ4REFAxVbS3N-vzrZ5B0u0Lw3sHrtx8A-YngMQuSOHOBH6IjRBIMkThuZP9wwEXFjeXE2Qklv6XSk_OGXU337geupp-bESRqbdi_NptGiTXmARkVW4t3w9NT9KpRxqK4dIb808n4HeZAjvJrMzxKyyOU1ooNHmSVZGh_dxKo-c4Cnjgy7zSvHUtsx-V-5oHs16jzePx2YAy0I6KH-vuYFyqwECJUvmXYhra4AkkKrsT36vt89mnohJHKQnjtXK0X5x73zcclkwCrXEZwVpr4-p4yPOc_Dnam-SsAaMmQdKw"
+        self.TOKEN_BARIST="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTUyMjU1OTcxNzkwOTU4MzcyMSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImlhdCI6MTYxNDY0NTE4MiwiZXhwIjoxNjE0NzMxNTgyLCJhenAiOiI5ZndPVGV1czhrNVpzZ0Y1dGhQdTJpY1phM05SaGRhVCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWwiXX0.XvEy4gy5bs4265hFFc5cv5KrgzZlQmaP-GTR_Xc-ttqJFE8IZD1zKM9OWawrW0xNldqLGq4MuPtuoJCaq-xa6CpbnmXhXEOkBARtiWJTn_wCK1puh0bg0czZwB1WhVxUkFwnLkrIiX2C9UVfWRSshVkfhtaxwaiKrPXKvWPaFmC0w4LRY76tCNH0PvYxiXQPVX6It5I7vQnQPzSMRX02MKt4F0eTSheDV7H7Rl6woWVqI8A0B9BHOxibOsGPbrUI6avrWIf52FnUQ53nnPS7B8c1wKcKdcgGLFQVhPBmAOUPdQb_uAS-3zLjMjh-tiMdv2auD_8vUXHOAzj01BvnUg"
+        self.TOKEN_MANAGER= 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYyZ2ZNSGxmRGRJRXRNbkUxNzhFMCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXByb2plY3R1ZGFjaXR5LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDAwYzgxMjE1MjIxODAwNmEzYzc0MzUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTQ2NDUyMzAsImV4cCI6MTYxNDczMTYzMCwiYXpwIjoiOWZ3T1RldXM4azVac2dGNXRoUHUyaWNaYTNOUmhkYVQiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpkcmlua3MiLCJnZXQ6ZHJpbmtzLWRldGFpbCIsInBhdGNoOmRyaW5rcyIsInBvc3Q6ZHJpbmtzIl19.tDmqVGyJe_cAu9SZJeEABBOZDtxfomtQYgVrxUS4ZgdLHbRATjuzYHupC1rkcZZhzvpTCeREC9IunI3KaZ866zv-JzSJ5PF8nsftMlauXaOjoHAHxe7ODBkHCJm6Mc34mXW5TnEL806OrJds1h13psc6Gm2-jIFHenJW16AkJL4nNhxsqUlRG386qNW0FEGAlZShXvSeW2WvCFn3RAPQYDcGYWBDhH92af2jXIHPI6b3B0F4UkLBcjsZSWRgt_O-_KDqA1TiMUeZgW_OsVar-QZ6I9_Vo-1b5FPSYK-sX0kxEqj6OcKpspk6ruuilHurcFVBfbsW90c1XdeIqvFlKg'
         self.FAKE_TOKEN = 'JDSKJKS'
 
 
@@ -79,7 +79,7 @@ class CoffeTestCase(unittest.TestCase):
     def test_post_drink(self):
         # title should be unique- make sure to change it before running the test file
       new_drink= {
-            "title":"A_new_drink_to_drink_4",
+            "title":"A_new_drink_to_drink_6",
             "recipe": {
                 'color' : "white",
                 'name' : 'vodca',
