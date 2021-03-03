@@ -1,1 +1,0 @@
-web: ionic serve -p $PORT app:api
