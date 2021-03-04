@@ -9,7 +9,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postbuild": "ionic build --prod"
   },
   "private": true,
   "dependencies": {
@@ -58,5 +59,6 @@
     "tslint": "~5.16.0",
     "typescript": "~3.1.6"
   },
+  "proxy": "http://localhost:5000",
   "description": "An Ionic project"
 }
